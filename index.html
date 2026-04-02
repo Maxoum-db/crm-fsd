@@ -41,9 +41,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helveti
 .btn-ghost{background:transparent;color:var(--gray-40);border:1px solid var(--gray-10)}.btn-ghost:hover{border-color:var(--blue);color:var(--blue)}
 .reset-link{font-size:12px;color:var(--blue);cursor:pointer;text-decoration:underline}
 .info-bar{display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;color:var(--gray-40)}
-.tbl-wrap{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.tbl-wrap{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:visible}
 table{width:100%;border-collapse:collapse;font-size:13px}
-thead th{background:var(--gray-05);padding:10px 10px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.4px;font-weight:700;color:var(--gray-40);border-bottom:1px solid var(--gray-10);position:sticky;top:48px;cursor:pointer;white-space:nowrap;user-select:none;z-index:50}
+thead th{background:var(--gray-05);padding:10px 10px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.4px;font-weight:700;color:var(--gray-40);border-bottom:1px solid var(--gray-10);position:sticky;top:48px;cursor:pointer;white-space:nowrap;user-select:none;z-index:100}
 thead th:hover{color:var(--navy)}
 tbody tr{border-bottom:1px solid var(--gray-05);transition:background .08s;cursor:pointer}
 tbody tr:hover{background:#f0f4ff}
@@ -56,8 +56,8 @@ td.nom-cell{display:flex;align-items:center;gap:6px;font-weight:600;color:var(--
 .bdg-vcf{background:var(--purple);color:#fff;font-size:10px;padding:1px 7px;border-radius:10px}
 .score-bar{display:inline-block;height:6px;border-radius:3px;background:var(--gray-10);width:60px;position:relative;vertical-align:middle}
 .score-fill{position:absolute;left:0;top:0;height:100%;border-radius:3px;transition:width .3s}
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:200;backdrop-filter:blur(2px)}.overlay.open{display:block}
-.panel{position:fixed;right:0;top:0;bottom:0;width:520px;background:#fff;z-index:201;box-shadow:-8px 0 24px rgba(0,0,0,.12);transform:translateX(100%);transition:transform .2s ease;overflow-y:auto}.panel.open{transform:translateX(0)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:1100;backdrop-filter:blur(2px)}.overlay.open{display:block}
+.panel{position:fixed;right:0;top:0;bottom:0;width:520px;background:#fff;z-index:1101;box-shadow:-8px 0 24px rgba(0,0,0,.12);transform:translateX(100%);transition:transform .2s ease;overflow-y:auto}.panel.open{transform:translateX(0)}
 .pan-head{background:var(--navy);color:#fff;padding:24px;position:relative}
 .pan-head h2{font-size:18px;font-weight:700}.pan-head .sub{opacity:.7;font-size:13px;margin-top:4px}
 .pan-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,.15);border:none;color:#fff;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
@@ -255,6 +255,20 @@ input,select,textarea{font-size:16px!important}
 </style>
 </head>
 <body>
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen" style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#1b2a4a 0%,#0073ea 100%)">
+<div style="background:#fff;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.2);padding:40px;width:380px;max-width:90vw;text-align:center">
+<div style="font-size:28px;font-weight:800;color:#1b2a4a;margin-bottom:4px">CRM <span style="color:#0073ea;font-weight:400">FSD &mdash; MBO</span></div>
+<div style="font-size:13px;color:#676879;margin-bottom:28px">Acc&egrave;s s&eacute;curis&eacute;</div>
+<input type="password" id="login-pwd" placeholder="Mot de passe" style="width:100%;padding:12px 16px;border:2px solid #e6e9ef;border-radius:8px;font-size:15px;margin-bottom:12px;outline:none;transition:border .15s" onfocus="this.style.borderColor='#0073ea'" onblur="this.style.borderColor='#e6e9ef'" onkeydown="if(event.key==='Enter')doLogin()">
+<div id="login-err" style="color:#e2445c;font-size:12px;font-weight:600;min-height:18px;margin-bottom:8px"></div>
+<button onclick="doLogin()" style="width:100%;padding:12px;background:#0073ea;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#0060c2'" onmouseout="this.style.background='#0073ea'">Connexion</button>
+<div style="font-size:11px;color:#c5c7d0;margin-top:16px">Free Spirits Distribution</div>
+</div>
+</div>
+
+<div id="app-content" style="display:none">
 <div class="nav">
 <div class="nav-logo">CRM <span>FSD &mdash; MBO</span></div>
 <div class="nav-tabs">
@@ -263,7 +277,7 @@ input,select,textarea{font-size:16px!important}
 <div class="nav-tab" onclick="switchTab('ca')">Chiffre d'Affaires</div>
 </div>
 <div class="nav-right">
-<div class="nav-badge">3346 contacts &bull; 01/04/2026</div>
+<div class="nav-badge">Secteur MBO &bull; 02/04/2026</div>
 <button class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.3)" onclick="exportCSV()">Export CSV</button>
 </div>
 </div>
@@ -271,13 +285,10 @@ input,select,textarea{font-size:16px!important}
 <!-- CRM TAB -->
 <div class="tab-content active" id="tab-crm">
 <div class="kpis">
-<div class="kpi"><div class="kpi-val" id="k-t">3346</div><div class="kpi-lbl">Contacts</div></div>
 <div class="kpi green"><div class="kpi-val" id="k-a">1302</div><div class="kpi-lbl">Avec CA</div></div>
 <div class="kpi green"><div class="kpi-val" id="k-top">248</div><div class="kpi-lbl">Top (&gt;5k&euro;)</div></div>
-<div class="kpi orange"><div class="kpi-val" id="k-p">2000</div><div class="kpi-lbl">Prospects</div></div>
 <div class="kpi"><div class="kpi-val" id="k-m">797</div><div class="kpi-lbl">Secteur MBO</div></div>
 <div class="kpi purple"><div class="kpi-val" id="k-v">698</div><div class="kpi-lbl">VCF</div></div>
-<div class="kpi"><div class="kpi-val" id="k-ca">4 973 805&euro;</div><div class="kpi-lbl">CA Total</div></div>
 </div>
 <div class="toolbar">
 <input type="text" class="search" id="q" placeholder="Rechercher..." oninput="af()">
@@ -421,7 +432,7 @@ input,select,textarea{font-size:16px!important}
 <!-- DETAIL PANEL -->
 <div class="overlay" id="ov" onclick="closeP()"></div>
 <div class="panel" id="pn">
-<button class="pan-close" onclick="closeP()">&times;</button>
+<button class="pan-close" onclick="closeP()" style="left:16px;right:auto" title="Retour">&larr;</button>
 <div class="pan-head"><h2 id="dn"></h2><div class="sub" id="ds"></div></div>
 <div class="pan-body" id="db"></div>
 </div>
@@ -453,7 +464,7 @@ document.getElementById('rc').textContent=F.length+' contacts';document.getEleme
 
 function renderPg(){const tp=Math.ceil(F.length/PS),p=document.getElementById('pg');if(tp<=1){p.innerHTML='';return}let h='<button '+(cp===1?'disabled':'')+' onclick="gp('+(cp-1)+')">&laquo;</button>';const st=Math.max(1,cp-3),en=Math.min(tp,cp+3);for(let i=st;i<=en;i++)h+='<button class="'+(i===cp?'on':'')+'" onclick="gp('+i+')">'+i+'</button>';h+='<button '+(cp===tp?'disabled':'')+' onclick="gp('+(cp+1)+')">&raquo;</button>';p.innerHTML=h}
 function gp(p){cp=p;render();window.scrollTo({top:200,behavior:'smooth'})}
-function uk(){document.getElementById('k-t').textContent=F.length;document.getElementById('k-a').textContent=F.filter(c=>c.ca>0).length;document.getElementById('k-top').textContent=F.filter(c=>c.ca>5000).length;document.getElementById('k-p').textContent=F.filter(c=>c.classif==='PROSPECT').length;document.getElementById('k-m').textContent=F.filter(c=>c.mbo).length;document.getElementById('k-v').textContent=F.filter(c=>c.src.includes('VCF')).length;const ca=F.reduce((s,c)=>s+c.ca,0);document.getElementById('k-ca').textContent=ca.toLocaleString('fr-FR',{minimumFractionDigits:0})+' \u20ac'}
+function uk(){document.getElementById('k-a').textContent=F.filter(c=>c.ca>0).length;document.getElementById('k-top').textContent=F.filter(c=>c.ca>5000).length;document.getElementById('k-m').textContent=F.filter(c=>c.mbo).length;document.getElementById('k-v').textContent=F.filter(c=>c.src.includes('VCF')).length}
 
 function openP(i){const c=F[i];if(!c)return;const m=CM[c.classif]||{l:c.classif,c:''};
 document.getElementById('dn').textContent=c.nom;
@@ -462,7 +473,7 @@ let h='<div class="sec"><h3>Contact</h3>'+rw('G\u00e9rant',c.contact)+rw('T\u00e
 h+='<div class="sec"><h3>Localisation</h3>'+rw('Adresse',c.adresse)+rw('CP',c.cp)+rw('Ville',c.ville)+rw('D\u00e9pt',c.dept)+rw('R\u00e9gion',c.region)+rw('Dist. Villeneuve',c.distVDA<9000?c.distVDA+' km':'-')+rw('Dist. H\u00e9rouville',c.distHSC<9000?c.distHSC+' km':'-')+'</div>';
 h+='<div class="sec"><h3>Commercial</h3>'+rw('CA',c.ca>0?c.ca.toLocaleString('fr-FR')+' \u20ac':'-')+rw('Type',c.type)+rw('Priorit\u00e9',c.prio)+rw('Agent',c.agent)+rw('Commande',c.cmd)+rw('Relance',c.relance)+rw('Source',c.src)+'</div>';
 if(c.comment)h+='<div class="sec"><h3>Notes</h3><div class="note-box">'+esc(c.comment)+'</div></div>';
-h+='<div class="acts">';if(c.email)h+='<a href="mailto:'+c.email+'" class="btn btn-blue" style="text-decoration:none;color:#fff">Email</a>';if(c.port||c.tel)h+='<a href="tel:'+(c.port||c.tel).replace(/\s/g,'')+'" class="btn btn-ghost" style="text-decoration:none">Appeler</a>';h+='</div>';
+h+='<div class="acts">';h+='<button class="btn btn-blue" onclick="closeP();openQE('+c.id+')">\u270E Modifier</button>';if(c.email)h+='<a href="mailto:'+c.email+'" class="btn btn-ghost" style="text-decoration:none">Email</a>';if(c.port||c.tel)h+='<a href="tel:'+(c.port||c.tel).replace(/\s/g,'')+'" class="btn btn-ghost" style="text-decoration:none">Appeler</a>';h+='</div>';
 document.getElementById('db').innerHTML=h;document.getElementById('ov').classList.add('open');document.getElementById('pn').classList.add('open')}
 function closeP(){document.getElementById('ov').classList.remove('open');document.getElementById('pn').classList.remove('open')}
 function rw(l,v){return '<div class="row"><span class="rl">'+l+'</span><span class="rv">'+(v||'-')+'</span></div>'}
@@ -641,6 +652,8 @@ return clusters;
 
 // ---- Main tour generation ----
 function genTour(){
+// Auto-init week selector if empty
+if(!document.getElementById('t-week').value){initWeekSelector()}
 const baseKey=document.getElementById('t-base').value;
 const radius=parseInt(document.getElementById('t-radius').value);
 const nDays=5; // Always 5 days (Lundi-Vendredi)
@@ -1432,9 +1445,37 @@ loadClientEdits();
 loadCA();
 
 init();
+// Auto-init tour week selector
+initWeekSelector();
 
 </script>
 <div class="cal-toast" id="cal-toast"></div>
 <div class="save-indicator" id="save-ind"></div>
+</div><!-- /app-content -->
+
+<script>
+const PWD_HASH='7cf86873c07388f751751b420703645b2afdd524b4798b6f9991421e3596082a';
+async function sha256(msg){const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(msg));return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('')}
+async function doLogin(){
+const pwd=document.getElementById('login-pwd').value;
+if(!pwd){document.getElementById('login-err').textContent='Veuillez entrer le mot de passe';return}
+const hash=await sha256(pwd);
+if(hash===PWD_HASH){
+sessionStorage.setItem('crm_auth','1');
+document.getElementById('login-screen').style.display='none';
+document.getElementById('app-content').style.display='block';
+}else{
+document.getElementById('login-err').textContent='Mot de passe incorrect';
+document.getElementById('login-pwd').value='';
+document.getElementById('login-pwd').focus();
+}
+}
+// Check if already authenticated this session
+if(sessionStorage.getItem('crm_auth')==='1'){
+document.getElementById('login-screen').style.display='none';
+document.getElementById('app-content').style.display='block';
+}
+</script>
+
 </body>
 </html>
